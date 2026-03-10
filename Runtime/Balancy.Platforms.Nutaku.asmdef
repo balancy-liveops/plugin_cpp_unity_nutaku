@@ -1,0 +1,18 @@
+{
+    "name": "Balancy.Platforms.Nutaku",
+    "rootNamespace": "",
+    "references": [
+        "GUID:422887e59947e44d786699df37519236",
+        "GUID:54c891bb28f34cabb7760c0a83b1b147",
+        "Balancy.Payments"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

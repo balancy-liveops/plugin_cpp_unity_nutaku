@@ -1,0 +1,46 @@
+{
+	"name": "co.balancy.nutaku",
+	"displayName": "Balancy Nutaku",
+	"version": "1.0.0",
+	"unity": "2022.3",
+	"description": "Nutaku platform integration for Balancy.",
+	"keywords": [
+		"liveops",
+		"monetization",
+		"economy",
+		"game",
+		"development",
+		"revenue",
+		"ltv",
+		"game design",
+		"unity",
+		"balance",
+		"data",
+		"config",
+		"purchases",
+		"in-apps",
+        "nutaku"
+	],
+	"homepage": "https://balancy.co/",
+	"bugs": {
+		"url": "https://github.com/balancy-liveops/plugin_cpp_unity_nutaku/issues",
+		"email" : "contact@balancy.co"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/balancy-liveops/plugin_cpp_unity_nutaku.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Balancy",
+		"email": "contact@balancy.co",
+		"url": "https://balancy.co/"
+	},
+	"dependencies": {
+		"co.balancy.unity-purchasing": "1.0.0",
+        "co.balancy.unity": "1.3.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+	},
+	"documentationUrl": "https://en.docsv2.balancy.dev",
+	"changelogUrl": "https://en.docsv2.balancy.dev/release_notes/"
+}

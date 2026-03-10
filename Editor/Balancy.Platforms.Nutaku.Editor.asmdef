@@ -1,0 +1,14 @@
+{
+    "name": "Balancy.Platforms.Nutaku.Editor",
+    "rootNamespace": "",
+    "references": ["GUID:54c891bb28f34cabb7760c0a83b1b147"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

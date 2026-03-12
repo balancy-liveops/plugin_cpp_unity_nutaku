@@ -326,7 +326,7 @@ namespace Balancy.Platforms.Nutaku
                     productId,
                     info.LocalizedName?.Value ?? API.Localization.GetLocalizedValue(info.Name),
                     UnityEngine.Mathf.RoundToInt(info.Price),
-                    product.Icon,
+                    productInfo.Icon,
                     info.LocalizedDescription?.Value ?? API.Localization.GetLocalizedValue(info.Description)
                 );
 

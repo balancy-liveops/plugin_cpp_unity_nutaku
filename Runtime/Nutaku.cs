@@ -184,10 +184,12 @@ namespace Balancy.Platforms.Nutaku
             }
         }
 
+#if UNITY_WEBGL
         private void AddRequest(string key, UnityAction<object> unityAction)
         {
             _requests.Add(key, unityAction);
         }
+#endif
 
         private MonoBehaviour GetScript()
         {

@@ -4,7 +4,7 @@
     "references": [
         "GUID:422887e59947e44d786699df37519236",
         "GUID:54c891bb28f34cabb7760c0a83b1b147",
-        "Balancy.Payments"
+        "GUID:8f18cb32d5c31434a8cd747b3e36b037"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

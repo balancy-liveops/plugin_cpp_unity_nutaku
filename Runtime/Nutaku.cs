@@ -20,6 +20,7 @@ namespace Balancy.Platforms.Nutaku
 {
     public delegate void WebGLPurchase(int env, string id, string name, int price, string img, string desc, string req_id);
     
+    [Preserve]
     public class UserInfo
     {
         [JsonProperty("id")]
@@ -66,6 +67,7 @@ namespace Balancy.Platforms.Nutaku
         private static BalancyNutakuObject _gameObjectHelper;
         
 #if UNITY_WEBGL
+        [Preserve]
         public class TokensInfo
         {
             [JsonProperty("token")] public string Token;
@@ -364,6 +366,7 @@ namespace Balancy.Platforms.Nutaku
         public BalancyWebGLResponseData Response;
     }
 
+    [Preserve]
     internal class BalancyWebGLResponseData
     {
         [JsonProperty("success")] public bool Success;
@@ -371,6 +374,7 @@ namespace Balancy.Platforms.Nutaku
         [JsonProperty("data")] public string Data;
     }
 
+    [Preserve]
     public class BalancyWebGLPayment
     {
         [JsonProperty("payment_id")] public string PaymentId;

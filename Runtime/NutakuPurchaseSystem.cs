@@ -10,6 +10,8 @@ using NutakuUnitySdk;
 #endif
 using UnityEngine;
 using UnityEngine.Events;
+using PurchaseStatus = Balancy.Runtime.Core.PurchaseStatus;
+using PurchaseResult = Balancy.Runtime.Core.PurchaseResult;
 
 namespace Balancy.Platforms.Nutaku
 {
@@ -422,12 +424,12 @@ namespace Balancy.Platforms.Nutaku
             
         }
 
-        public void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, PurchaseResult result)
+        public void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, Balancy.Runtime.Core.PurchaseResult result)
         {
             ReportPaymentStatusToBalancy(productInfo, new NutakuPurchaseResult {ProductId = result.ProductId, ErrorMessage = result.ErrorMessage, Status = result.Status, Price = result.Price, CurrencyCode = result.CurrencyCode});
         }
 
-        private static Actions.PurchaseResult ConvertStatusToResult(PurchaseStatus status)
+        private static Actions.PurchaseResult ConvertStatusToResult(Balancy.Runtime.Core.PurchaseStatus status)
         {
             switch (status)
             {
@@ -481,12 +483,12 @@ namespace Balancy.Platforms.Nutaku
             throw new NotImplementedException();
         }
 
-        public void RestorePurchases(Action<List<PurchaseResult>> onRestoreComplete)
+        public void RestorePurchases(Action<List<Balancy.Runtime.Core.PurchaseResult>> onRestoreComplete)
         {
             
         }
 
-        public void GetSubscriptionsInfo(Action<List<SubscriptionInfo>> callback)
+        public void GetSubscriptionsInfo(Action<List<Balancy.Runtime.Core.SubscriptionInfo>> callback)
         {
             
         }

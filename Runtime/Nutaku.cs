@@ -7,7 +7,6 @@ using Balancy.Core;
 using Balancy.Data.SmartObjects;
 #if UNITY_WEBGL
 using System.Runtime.InteropServices;
-using UnityEngine.Scripting;
 #endif
 using Newtonsoft.Json;
 #if UNITY_ANDROID
@@ -15,6 +14,7 @@ using NutakuUnitySdk;
 #endif
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Scripting;
 
 namespace Balancy.Platforms.Nutaku
 {
@@ -32,7 +32,7 @@ namespace Balancy.Platforms.Nutaku
     
     public class NutakuPurchaseResult
     {
-        public Balancy.Payments.PurchaseStatus Status { get; set; }
+        public Balancy.Runtime.Core.PurchaseStatus Status { get; set; }
         public string ProductId { get; set; }
         public string ErrorMessage { get; set; }
         

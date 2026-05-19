@@ -5,7 +5,7 @@ using System.Xml;
 using Balancy.Core;
 using Balancy.Payments;
 using Newtonsoft.Json;
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
 using NutakuUnitySdk;
 #endif
 using UnityEngine;
@@ -26,7 +26,7 @@ namespace Balancy.Platforms.Nutaku
         private WebGLPurchase _onPurchase;
 #endif
         
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         private static NutakuPayment _lastPayment;
         private static UnityAction<NutakuPaymentData> _onLastResponse;
 #endif
@@ -262,7 +262,7 @@ namespace Balancy.Platforms.Nutaku
                 product.LocalizedDescription?.Value ?? API.Localization.GetLocalizedValue(product.Description),
                 guid);
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
                 MakePayment(GetUserId(), product, response =>
                 {
                     if (response.Success)
@@ -301,7 +301,7 @@ namespace Balancy.Platforms.Nutaku
         //     callback?.Invoke(true);
         // }
         
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         public static void OnPaymentResultFromBrowserCallback(string paymentId, string statusFromBrowser)
         {
             switch (statusFromBrowser)

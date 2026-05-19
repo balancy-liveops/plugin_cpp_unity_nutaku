@@ -9,7 +9,7 @@ using Balancy.Data.SmartObjects;
 using System.Runtime.InteropServices;
 #endif
 using Newtonsoft.Json;
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
 using NutakuUnitySdk;
 #endif
 using UnityEngine;
@@ -42,7 +42,7 @@ namespace Balancy.Platforms.Nutaku
         public string OrderId { get; set; }
     }
     
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
     [Serializable]
     public class HandshakeResponse
     {
@@ -121,7 +121,7 @@ namespace Balancy.Platforms.Nutaku
 
         private Dictionary<string, UnityAction<object>> _requests = new Dictionary<string, UnityAction<object>>();
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         private delegate void OnHandshakeDelegate(NutakuApiRawResult rawResult, Constants.BalancyPlatform platform, UnityAction<Responses.AuthResponseData> onResult);
         
         internal Action<Action<bool>> _onConfigOnConfirmPurchase;
@@ -203,7 +203,7 @@ namespace Balancy.Platforms.Nutaku
             Debug.LogWarning("NutakuNetwork");
             _nutakuInstance = this;
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
             _onHandshake = OnHandshake;
             NutakuSdkConfig.loginResultToGameCallbackDelegate = OnLoginResultCallback;
             NutakuSdkConfig.paymentBrowserResultToGameCallbackDelegate = OnPaymentResultFromBrowserCallback;
@@ -265,12 +265,12 @@ namespace Balancy.Platforms.Nutaku
 
             handshake(guid);
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
             _onLoginResult = onResult;
             NutakuSdk.Initialize(_gameObjectHelper);
 #endif
         }
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         private void OnHandshake(NutakuApiRawResult rawResult, Constants.BalancyPlatform platform, UnityAction<Responses.AuthResponseData> onResult)
         {
             Debug.LogWarning("OnHandshake: " + rawResult.responseCode);

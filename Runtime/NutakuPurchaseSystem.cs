@@ -252,7 +252,7 @@ namespace Balancy.Platforms.Nutaku
                 guid);
 #endif
 #if UNITY_ANDROID || UNITY_IOS
-                MakePayment(GetUserId(), product, response =>
+                MakePayment(GetUserId(), p, product, response =>
                 {
                     if (response.Success)
                     {
@@ -306,7 +306,7 @@ namespace Balancy.Platforms.Nutaku
             }
         }
 
-        private void MakePayment(int userId, Balancy.Core.Responses.Product productInfo, UnityAction<NutakuPaymentData> onResponse)
+        private void MakePayment(int userId, Actions.BalancyProductInfo p, Balancy.Core.Responses.Product productInfo, UnityAction<NutakuPaymentData> onResponse)
         {
             GetRawProductData(productInfo.ProductId, info =>
             {
@@ -319,7 +319,7 @@ namespace Balancy.Platforms.Nutaku
                     info.LocalizedDescription?.Value ?? API.Localization.GetLocalizedValue(info.Description)
                 );
 
-                NutakuApi.CreatePayment(payment, GetHelperScript(), resp => { OnMakePayment(resp, userId, onResponse); });
+                NutakuApi.CreatePayment(payment, GetHelperScript(), resp => { OnMakePayment(p, info, resp, userId, onResponse); });
             });
         }
 
@@ -348,7 +348,7 @@ namespace Balancy.Platforms.Nutaku
             }
         }
 
-        private void OnMakePayment(NutakuApiRawResult rawResult, int userId, UnityAction<NutakuPaymentData> onResponse)
+        private void OnMakePayment(Actions.BalancyProductInfo productInfo,Balancy.Core.Responses.Product p, NutakuApiRawResult rawResult, int userId, UnityAction<NutakuPaymentData> onResponse)
         {
             try
             {
@@ -376,7 +376,18 @@ namespace Balancy.Platforms.Nutaku
                     {
                         _lastPayment = parsedResult;
                         _onLastResponse = onResponse;
+#if UNITY_EDITOR
+                        ReportPaymentStatusToBalancy(productInfo, new PurchaseResult
+                        {
+                            Status = PurchaseStatus.Success,
+                            ProductId = productInfo.ProductId,
+                            Receipt = new Balancy.Runtime.Core.PurchaseReceipt { Receipt = "", ProductId = productInfo.ProductId, TransactionId = parsedResult.paymentId},
+                            Price = Mathf.RoundToInt(p.Price),
+                            TransactionId = parsedResult.paymentId,
+                        }, false);
+#else
                         NutakuSdk.OpenTransactionUrlInBrowser(parsedResult.transactionUrl);
+#endif
                     }
                 }
                 else
@@ -408,9 +419,17 @@ namespace Balancy.Platforms.Nutaku
             
         }
 
-        public void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, Balancy.Runtime.Core.PurchaseResult result)
+        public void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, Balancy.Runtime.Core.PurchaseResult result, bool requireReceiptValidation = true)
         {
-            ReportPaymentStatusToBalancy(productInfo, new NutakuPurchaseResult {ProductId = result.ProductId, ErrorMessage = result.ErrorMessage, Status = result.Status, Price = result.Price, CurrencyCode = result.CurrencyCode});
+            ReportPaymentStatusToBalancy(productInfo, new NutakuPurchaseResult
+            {
+                ProductId = result.ProductId,
+                ErrorMessage = result.ErrorMessage,
+                OrderId = result.TransactionId,
+                Status = result.Status,
+                Price = result.Price,
+                CurrencyCode = result.CurrencyCode
+            }, requireReceiptValidation);
         }
 
         private static Actions.PurchaseResult ConvertStatusToResult(Balancy.Runtime.Core.PurchaseStatus status)
@@ -432,7 +451,7 @@ namespace Balancy.Platforms.Nutaku
             }
         }
 
-        private void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, NutakuPurchaseResult result)
+        private void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, NutakuPurchaseResult result, bool requireReceiptValidation = true)
         {
             var paymentInfo = new PaymentInfo
             {
@@ -446,7 +465,7 @@ namespace Balancy.Platforms.Nutaku
             Balancy.API.FinalizedHardPurchase(ConvertStatusToResult(result.Status), productInfo, paymentInfo, (_, _) =>
             {
                 // should I do something here?
-            });
+            }, requireReceiptValidation);
         }
         
         private void EnsureInitialized(Action onInitialized, Action<string> onFailed)

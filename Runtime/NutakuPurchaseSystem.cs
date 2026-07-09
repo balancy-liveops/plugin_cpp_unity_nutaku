@@ -1,7 +1,6 @@
 ﻿#if ENABLE_NUTAKU
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using Balancy.Core;
 using Balancy.Payments;
 using Newtonsoft.Json;
@@ -40,7 +39,6 @@ namespace Balancy.Platforms.Nutaku
 #endif
         )
         {
-            Debug.LogWarning("NutakuPurchaseSystem");
             _getScript = getScript;
             _getUserId = getUserId;
 #if UNITY_WEBGL
@@ -79,11 +77,9 @@ namespace Balancy.Platforms.Nutaku
 
         public void GetProducts(Action<List<ProductInfo>> callback)
         {
-            Log("GetProducts");
             var res = new List<ProductInfo>();
             Balancy.API.GetProducts(data =>
             {
-                Log("GetProducts: " + data.Success);
                 if (!data.Success)
                     callback(null);
                 else
@@ -113,7 +109,6 @@ namespace Balancy.Platforms.Nutaku
         {
             GetRawProductData(productId, product =>
             {
-                Log("GetProduct: " + product);
                 callback(new ProductInfo
                 {
                     StoreSpecificId = product.PlatformProductId,
@@ -132,10 +127,8 @@ namespace Balancy.Platforms.Nutaku
 
         private void GetRawProductData(string productId, Action<Balancy.Core.Responses.Product> callback)
         {
-            Log("GetRawProductData: " + productId);
             Balancy.API.GetProducts(data =>
             {
-                Log("GetRawProductData: " + data.Success);
                 if (!data.Success)
                     callback(null);
                 else
@@ -147,7 +140,6 @@ namespace Balancy.Platforms.Nutaku
 
         public void PurchaseProduct(Actions.BalancyProductInfo productInfo)
         {
-            Log("PurchaseProduct");
             EnsureInitialized(() =>
             {
                 var productId = productInfo.ProductId;
@@ -175,10 +167,8 @@ namespace Balancy.Platforms.Nutaku
 
         private void CompleteInternalPurchase(Actions.BalancyProductInfo productInfo, Balancy.Core.Responses.Product product, int userId, string paymentId)
         {
-            Log("CompleteInternalPurchase: " + paymentId);
             NutakuCompleteInternalPurchase(userId, paymentId, completeResult =>
             {
-                Log("NutakuCompleteInternalPurchase: " + completeResult.Success);
                 if (completeResult.Success)
                 {
                     ReportPaymentStatusToBalancy(productInfo, new NutakuPurchaseResult
@@ -245,7 +235,6 @@ namespace Balancy.Platforms.Nutaku
                 }
                 else
                 {
-                    Debug.LogError("PurchaseNutakuProduct: error for " + product.ProductId + " => " + data.Data);
                     ReportPaymentStatusToBalancy(p, new PurchaseResult
                     {
                         Status = PurchaseStatus.Failed,
@@ -319,10 +308,8 @@ namespace Balancy.Platforms.Nutaku
 
         private void MakePayment(int userId, Balancy.Core.Responses.Product productInfo, UnityAction<NutakuPaymentData> onResponse)
         {
-            Log("MakePayment");
             GetRawProductData(productInfo.ProductId, info =>
             {
-                Log("GetRawProductData: " + productInfo.ProductId);
                 var productId = info.PlatformProductId;
                 var payment = NutakuPayment.PaymentCreationInfo(
                     productId,
@@ -338,7 +325,6 @@ namespace Balancy.Platforms.Nutaku
 
         private void OnPutPayment(NutakuApiRawResult rawResult, int userId, NutakuPayment payment, UnityAction<NutakuPaymentData> onResponse)
         {
-            Log("OnPutPayment: " + rawResult.responseCode);
             try
             {
                 if (rawResult.responseCode == 200)
@@ -364,13 +350,11 @@ namespace Balancy.Platforms.Nutaku
 
         private void OnMakePayment(NutakuApiRawResult rawResult, int userId, UnityAction<NutakuPaymentData> onResponse)
         {
-            Log("OnMakePayment: " + rawResult.responseCode);
             try
             {
                 if ((rawResult.responseCode > 199) && (rawResult.responseCode < 300))
                 {
                     var parsedResult = NutakuApi.Parse_CreatePayment(rawResult);
-                    Log("OnMakePayment: " + parsedResult.next);
                     if (parsedResult.next == "put")
                     {
                         if (NutakuNetwork.NutakuInstance._onConfigOnConfirmPurchase != null)
@@ -450,7 +434,6 @@ namespace Balancy.Platforms.Nutaku
 
         private void ReportPaymentStatusToBalancy(Actions.BalancyProductInfo productInfo, NutakuPurchaseResult result)
         {
-            Log("ReportPaymentStatusToBalancy: " + result.Status + " => " + productInfo?.ProductId);
             var paymentInfo = new PaymentInfo
             {
                 ProductId = productInfo?.ProductId,

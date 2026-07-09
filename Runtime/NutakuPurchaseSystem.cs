@@ -127,13 +127,13 @@ namespace Balancy.Platforms.Nutaku
 
         private void GetRawProductData(string productId, Action<Balancy.Core.Responses.Product> callback)
         {
-            Balancy.API.GetProducts(data =>
+            Balancy.API.GetProduct(productId, data =>
             {
                 if (!data.Success)
                     callback(null);
                 else
                 {
-                    callback(data.Products.Find(p => p.ProductId == productId));
+                    callback(data.Product);
                 }
             });
         }

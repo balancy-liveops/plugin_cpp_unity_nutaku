@@ -137,7 +137,7 @@ const BalancyWebGL = {
         NutakuGI.paymentObject.skuId       = itemId;
         NutakuGI.paymentObject.imgUrl      = imageUrl;
         NutakuGI.paymentObject.description = description;
-        NutakuGI.paymentObject.message     = 'пипка';
+        NutakuGI.paymentObject.message     = itemName;
 
         NutakuGI.createPayment(NutakuGI.paymentObject).then(result => {
             if (result === undefined) {

@@ -154,6 +154,9 @@ namespace Balancy.Platforms.Nutaku
 
         private static NutakuNetwork _nutakuInstance;
         private NutakuPurchaseSystem _system;
+
+        /// <summary>The purchase system of the already created instance, or null (never constructs one).</summary>
+        internal static NutakuPurchaseSystem ExistingPurchaseSystem => _nutakuInstance?._system;
         
         [RuntimeInitializeOnLoadMethod]
         private static void Init()
@@ -411,6 +414,13 @@ namespace Balancy.Platforms.Nutaku
         {
             _script = script;
         }
+
+#if UNITY_ANDROID || UNITY_IOS
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            NutakuNetwork.ExistingPurchaseSystem?.OnApplicationFocusChanged(hasFocus);
+        }
+#endif
         
         internal Coroutine WaitUntil(Func<bool> condition, Action callback)
         {
